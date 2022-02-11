@@ -16,7 +16,7 @@ request.onsuccess = function(event) {
 
   // check if app is online, if yes run checkDatabase() function to send all local db data to api
   if (navigator.onLine) {
-    uploadPizza();
+    uploadBudget();
   }
 };
 
@@ -25,31 +25,28 @@ request.onerror = function(event) {
   console.log(event.target.errorCode);
 };
 
-// This function will be executed if we attempt to submit a new pizza and there's no internet connection
-// this function will be used in the add-pizza.js form submission function if fetch().catch() is executed
-// ...catch() only executes on network failure
 function saveRecord(record) {
   // open a new transaction with the database with read and write permissions 
-  const transaction = db.transaction(['new_pizza'], 'readwrite');
+  const transaction = db.transaction(['new_budget'], 'readwrite');
 
-  // access the object store for `new_pizza`
-  const pizzaObjectStore = transaction.objectStore('new_pizza');
+  // access the object store for `new_budget`
+  const budgetObjectStore = transaction.objectStore('new_budget');
 
   // add record to your store with add method.
-  pizzaObjectStore.add(record);
+  budgetObjectStore.add(record);
 }
 
-function uploadPizza() {
+function uploadBudget() {
   // open a transaction on your pending db
-  const transaction = db.transaction(['new_pizza'], 'readwrite');
+  const transaction = db.transaction(['new_budget'], 'readwrite');
 
   // access your pending object store
-  const pizzaObjectStore = transaction.objectStore('new_pizza');
+  const budgetObjectStore = transaction.objectStore('new_budget');
 
   // get all records from store and set to a variable
   // .getAll() is asynchronous and it has to be attached to an event handler
   // ..in order to retrieve the data 
-  const getAll = pizzaObjectStore.getAll();
+  const getAll = budgetObjectStore.getAll();
 
   // upon a successful .getAll() execution, run this function
   getAll.onsuccess = function() {
@@ -57,7 +54,7 @@ function uploadPizza() {
     // once getAll is completed, getAll will have a .result property that is an array
     // .. of all the data we retrieved from the new_pizza object store.
     if (getAll.result.length > 0) {
-      fetch('/api/pizzas', {
+      fetch('/api/transaction', {
         method: 'POST',
         body: JSON.stringify(getAll.result),
         headers: {
@@ -71,11 +68,11 @@ function uploadPizza() {
             throw new Error(serverResponse);
           }
           // open one more transaction
-          const transaction = db.transaction(['new_pizza'], 'readwrite');
+          const transaction = db.transaction(['new_budget'], 'readwrite');
           // access the new_pizza object store
-          const pizzaObjectStore = transaction.objectStore('new_pizza');
+          const budgetObjectStore = transaction.objectStore('new_budget');
           // clear all items in your store
-          pizzaObjectStore.clear();
+          budgetObjectStore.clear();
         })
         .catch(err => {
           // set reference to redirect back here
@@ -86,4 +83,4 @@ function uploadPizza() {
 }
 
 // listen for app coming back online
-window.addEventListener('online', uploadPizza);
+window.addEventListener('online', uploadBudget);

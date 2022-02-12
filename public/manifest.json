@@ -11,17 +11,17 @@
         "type": "image/png"
       },
       {
-        "src": "icons/icon-256x256.png",
+        "src": "icons/icon-152x152.png",
         "sizes": "152x152",
         "type": "image/png"
       },
       {
-        "src": "icons/icon-256x256.png",
+        "src": "icons/icon-144x144.png",
         "sizes": "144x144",
         "type": "image/png"
       },
       {
-        "src": "icons/icon-256x256.png",
+        "src": "icons/icon-72x72.png",
         "sizes": "72x72",
         "type": "image/png"
       },

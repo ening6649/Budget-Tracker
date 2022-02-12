@@ -12,7 +12,17 @@
       },
       {
         "src": "icons/icon-256x256.png",
-        "sizes": "256x256",
+        "sizes": "152x152",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/icon-256x256.png",
+        "sizes": "144x144",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/icon-256x256.png",
+        "sizes": "72x72",
         "type": "image/png"
       },
       {

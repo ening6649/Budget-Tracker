@@ -29,6 +29,18 @@ self.addEventListener('fetch', function (e) {
         console.log('file is not cached, fetching : ' + e.request.url)
 
         return fetch(e.request.url)
+        .then(response => {
+          // If the response was good, clone it and store it in the cache.
+          if (response.status === 200) {
+            cache.put(evt.request.url, response.clone());
+          }
+
+          return response;
+        })
+        .catch(err => {
+          // Network request failed, try to get it from the cache.
+          return cache.match(evt.request);
+        });
       }
 
       // You can omit if/else for console.log & put one line below like this too.

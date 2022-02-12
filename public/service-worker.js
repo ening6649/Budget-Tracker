@@ -22,7 +22,7 @@ self.addEventListener('fetch', function (evt) {
   console.log('fetch request : ' + evt.request.url)
   evt.respondWith(
     caches
-    .open(DATA_CACHE_NAME)
+    .open(CACHE_NAME)
     .then(cache => {
       return fetch(evt.request)
         .then(response => {

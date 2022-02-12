@@ -28,7 +28,7 @@ self.addEventListener('fetch', function (e) {
       } else {       // if there are no cache, try fetching request
         console.log('file is not cached, fetching : ' + e.request.url)
 
-        return fetch(e.request.url)
+        return fetch(e.request)
         .then(response => {
           // If the response was good, clone it and store it in the cache.
           if (response.status === 200) {

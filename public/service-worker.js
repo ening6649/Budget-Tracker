@@ -21,32 +21,27 @@ const FILES_TO_CACHE = [
 self.addEventListener('fetch', function (e) {
   console.log('fetch request : ' + e.request.url)
   e.respondWith(
-    caches.match(e.request).then(function (request) {
-      if (request) { // if cache is available, respond with cache
-        console.log('responding with cache : ' + e.request.url)
-        return request
-      } else {       // if there are no cache, try fetching request
-        console.log('file is not cached, fetching : ' + e.request.url)
-
-        return fetch(e.request)
+    caches
+    .open(DATA_CACHE_NAME)
+    .then(cache => {
+      return fetch(evt.request)
         .then(response => {
           // If the response was good, clone it and store it in the cache.
           if (response.status === 200) {
-            caches.put(evt.request.url, response.clone());
+            cache.put(evt.request.url, response.clone());
           }
 
           return response;
         })
         .catch(err => {
           // Network request failed, try to get it from the cache.
-          return caches.match(evt.request);
+          return cache.match(evt.request);
         });
-      }
-
-      // You can omit if/else for console.log & put one line below like this too.
-      // return request || fetch(e.request)
     })
-  )
+    .catch(err => console.log(err))
+  );
+
+  return;
 })
 
 // Cache resources
